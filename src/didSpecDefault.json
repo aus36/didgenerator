@@ -1,0 +1,24 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/did/v1",
+    "https://w3id.org/security/suites/jws-2020/v1"
+  ],
+  "id": "did:web:sample.com",
+  "verificationMethod": [
+    {
+      "id": "did:web:sample.com",
+      "type": "ed25519VerificationKey2020",
+      "controller": "did:web:sample.com",
+      "publicKeyBase58": "3sYXZB6X3YQ7X2m5Q4Z2Z6Z2Z2Z2Z2Z2Z2Z2Z2Z2Z2Z2"
+    }
+  ],
+  "authentication": [
+    "did:web:example.com#key-0"
+  ],
+  "assertionMethod": [
+    "did:web:example.com#key-0"
+  ],
+  "keyAgreement": [
+    "did:web:example.com#key-0"
+  ]
+}
