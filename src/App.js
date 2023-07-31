@@ -1,8 +1,10 @@
 import maoi from './maoi.jpeg';
+import sound from './did.mp3';
 import './App.css';
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import * as ed from '@noble/ed25519';
 import { sha512 } from '@noble/hashes/sha512';
+import useSound from 'use-sound';
 
 function generateDIDDocument(url) {
   // Generate a sha idk what that means
@@ -16,7 +18,7 @@ function generateDIDDocument(url) {
   let privKeyNoCommas = String(privKey).replace(/,/g, '');
   let pubKeyNoCommas = String(pubKey).replace(/,/g, '');
 
-  let id = "did:web:"+String(url);
+  let id = "did:web:" + String(url);
   let didDoc = {
     "@context": [
       "https://www.w3.org/ns/did/v1",
@@ -25,7 +27,7 @@ function generateDIDDocument(url) {
     "id": id,
     "verificationMethod": [
       {
-        "id": "did:web:"+String(url)+"#key-0",
+        "id": "did:web:" + String(url) + "#key-0",
         "type": "ed25519VerificationKey2020",
         "controller": id,
         "publicKeyBase58": pubKeyNoCommas
@@ -46,27 +48,29 @@ function generateDIDDocument(url) {
   return didDoc;
 }
 
+
 function App() {
   // useState to store the url
   const [url, setUrl] = useState("");
   const [loaded, setLoaded] = useState(false);
   const [didDoc, setDidDoc] = useState({});
+  const [play] = useSound(sound);
 
   return (
     <div className="App">
       <header className="App-header">
-        <img src={maoi} className="App-logo" alt="logo"/>
+        <img src={maoi} onClick={play} className="App-logo" alt="logo" />
         <form>
           <label>
-            URL: <input name="myInput" value = {url} onChange = {e => setUrl(e.target.value)}/>
+            URL: <input name="myInput" value={url} onChange={e => setUrl(e.target.value)} />
           </label>
           <button type="submit">Submit form (actually refresh lol)</button>
         </form>
-        <button onClick={() => {setDidDoc(generateDIDDocument(url)); setLoaded(true);}}>Generate DID Document</button>
-        <code style={{margin:20}}>
+        <button onClick={() => { setDidDoc(generateDIDDocument(url)); setLoaded(true); }}>Generate DID Document</button>
+        <code style={{ margin: 20 }}>
           {loaded
-          ? JSON.stringify(didDoc, null, 2)
-          : "not loaded yet"
+            ? JSON.stringify(didDoc, null, 2)
+            : "not loaded yet"
           }
         </code>
       </header>
